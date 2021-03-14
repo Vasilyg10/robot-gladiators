@@ -22,13 +22,19 @@ var startGame = function() {
 
       // pass the pickedEnemyObj object variable's value into the fight function, where it will assume the value of the enemy parameter
       fight(pickedEnemyObj);
-    }
-    // if player is not alive, break out of the loop and let endGame function run
-    else {
-      break;
+
+      // if player is still alive after the fight and we're not at the last enemy in the array
+      if (playerInfo.health > 0 && i < enemyInfo.length - 1) {
+        // ask if player wants to use the store before next round
+        var storeConfirm = window.confirm("The fight is over, visit the store before the next round?");
+
+        // if yes, take them to the store() function
+        if (storeConfirm) {
+          shop();
+        }
+      }
     }
   }
-
   // after loop ends, we are either out of player.health or enemies to fight, so run the endGame function
   endGame();
 };
@@ -39,7 +45,7 @@ var endGame = function() {
 
   // if player is still alive, player wins!
   if (playerInfo.health > 0) {
-    window.alert("Great job, you've survived the game! You now have a score of" + playerInfo.money + '.');
+    window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + '.');
   } else {
     window.alert("You've lost your robot in battle!");
   }
@@ -56,7 +62,6 @@ var endGame = function() {
 
 var fightOrSkip = function() {
   // ask player if they'd like to fight or skip using fightOrSkip function
-  debugger;
   var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
 
   promptFight = promptFight.toLowerCase();
@@ -162,8 +167,10 @@ var fight = function(enemy) {
 var shop = function() {
   // ask player what they'd like to do
   var shopOptionPrompt = window.prompt(
-    'Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one "REFILL", "UPGRADE", or "LEAVE" to make a choice.'
+    "Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one 1 for REFILL, 2 for UPGRADE, or 3 for LEAVE."
   );
+
+  shopOptionPrompt = parseInt(shopOptionPrompt);
 
   // use switch case to carry out action
   switch (shopOptionPrompt) {
